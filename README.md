@@ -154,8 +154,33 @@ This is because the equation only is valid per bit.
 One equation might not be enought to define a bitstream.
 Equations are not bitstream-complete.
 
+##Information
 
+Information is important to understand how bitstreams are function complete in circuits.
+A circuit with one OR gate and one AND gate outputs the same information.
 
+    f( A, B ) = A · B, A + B
+    
+    {2,4} · {3,5} = {3,4}
+    {2,4} + {3,5} = {2,5}
+    
+In the example above, all numbers given as input is returned as output.
+If we take the two outputs and put it in as input again, we end up where we started.
+This is only valid as long there is intersection between the bitstreams.
+
+A function "conserves information" when composed on itself N times returns the same output as input.
+
+    f( f( A, B ) ) = A, B
+    
+    f^N ( A, B ) = A, B
+    
+When there is a function G that composed with F returns the same output as input, it is called "inverse function".
+
+    F · G = I
+
+The I is the identity function that returns the input.
+For every function that returns input reordered there exists a function to reorder it back.
+This property is called "conservation of information".
 
 ##Sources
 

@@ -40,25 +40,125 @@ This works only for rational numbers, not for irrational.
 In binary logic, a "gate" is an operation on one or more bitstreams.
 A gate can be represented with a truth table:
 
-    OR
+    OR ( A + B )
     0 0 => 0
     0 1 => 1
     1 0 => 1
     1 1 => 1
 
-    AND
+    AND ( A · B )
     0 0 => 0
     0 1 => 0
     1 0 => 0
     1 1 => 1
 
-    NOT
+    NOT ( !A )
     0 => 1
     1 => 0
 
-    XOR
+    XOR ( A x B )
     0 0 => 0
     0 1 => 1
     1 0 => 1
     1 1 => 0
+
+Often we use symbols similar to basic arithmetic.
+Beside the name of each gate I have put the symbols used in this paper.
+
+Boolean Subtraction has the following gate:
+
+    EXCEPT ( A - B )
+    0 0 => 0
+    0 1 => 0
+    1 0 => 1
+    1 1 => 0
+    
+The output from this gate depends on the order of the inputs.
+
+Gates operates on bitstreams that change over time.
+The output from a gate is also another bitstream.
+It can be described as function:
+
+    result = function( input0, input1, ... ) where type( result ) and type( input ) is bitstream.
+
+When a function returns the same type as input, we call it "complete".
+Some authors suggests that Boolean Algebra is not subtraction-complete [A].
+The motivation is that it would require the existense of negative bits:
+
+    a - b = a + (-b) 
+
+The error done here is assuming that the non-existence of negative bits is preventing Boolean Subtraction.
+Instead, the non-existence of negative bits can be used to show how this gives well defined output.
+
+    0 - 0 = 0 + (-0) = 0
+    0 - 1 = 0 + (-1) = constant, but not 1
+    1 - 0 = 1 + (-0) = 1
+    1 - 1 = 1 + (-1) = constant, but not 1
+    
+In the cases of negative bits, the output of the gate is a constant, but not 1.
+We can create an axiom that this constant is 0.
+Any more complex gate would use the output from EXCEPT as a result, therefore well defined output.
+
+However, it is not necessary to do create this axiom to show that Boolean Subtraction is well defined:
+
+    0 - 0 = 0 · !0 = 0
+    0 - 1 = 0 · !1 = 0
+    1 - 0 = 1 · !0 = 1
+    1 - 1 = 1 · !1 = 0
+
+By transforming from EXCEPT to AND NOT and back we can derive all operations we need.
+There is no need for an extra axiom.
+Now remains to show that these transformations can be done.
+
+##Venn Diagrams
+
+We want to show the transformation
+
+    C = A + B
+    <=>
+    C - B = A - B
+
+The transformation can be illustrated with two Venn diagrams:
+
+    C = A + B
+     ___A_________________
+    |=====================|___B_____
+    |==============|======|=========|
+    |==============|======|=========|
+                   |================|
+
+    C - B = A - B
+     ___A_________________
+    |=====================|___B_____
+    |==============|      |         |
+    |==============|______|         |
+                   |________________|
+
+The transformation goes as following:
+
+    C = A + B
+    C·!B = A·!B + B·!B
+    C - B = A - B + 0
+    C - B = A - B
+
+Using subtraction in basic arithmetic, we would expect something like this:
+
+    C = A + B
+    C - B = A
+    
+    but we got
+    
+    C - B = A - B
+
+This is because the equation only is valid per bit.
+One equation might not be enought to define a bitstream.
+Equations are not bitstream-complete.
+
+
+
+
+##Sources
+
+A. http://www.allaboutcircuits.com/vol_4/chpt_7/2.html
+
 
